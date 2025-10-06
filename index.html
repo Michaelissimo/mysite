@@ -16,7 +16,7 @@
         /* Custom styles with background image */
         body {
             font-family: 'Inter', sans-serif;
-            color: #e5e5e5;
+            color: #EFBF04;
             position: relative;
             /* Dark semi-transparent overlay to ensure text is readable */
             background-color: rgba(17, 17, 17, 0.7);
@@ -68,13 +68,6 @@
                 <img src="tokologo.png" alt="Toko Logo" class="max-w-xs w-full h-auto">
             </div>
 
-            <!-- Artist Name Header -->
-            <header class="mb-12 fade-in-element">
-                <h1 class="text-3xl md:text-4xl font-bold tracking-wider uppercase">
-                    Toko
-                </h1>
-            </header>
-
             <!-- Main Content: Album/Music Grid -->
             <main class="mb-12 fade-in-element">
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
@@ -84,7 +77,7 @@
                         <div class="aspect-square bg-gray-800 rounded-lg overflow-hidden mb-2 transform transition-transform duration-300 group-hover:scale-105">
                             <img src="https://cdn-images.dzcdn.net/images/cover/69d6b7e44991ccf6589dab81b3765851/500x500-000000-80-0-0.jpg" alt="Album Art 1" class="w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-80">
                         </div>
-                        <p class="text-sm text-gray-400 opacity-0 md:opacity-100 item-title">Latest Single</p>
+                        <p class="text-sm opacity-0 md:opacity-100 item-title">Latest Single</p>
                     </a>
 
                     <!-- Grid Item 2 -->
@@ -92,7 +85,7 @@
                         <div class="aspect-square bg-gray-800 rounded-lg overflow-hidden mb-2 transform transition-transform duration-300 group-hover:scale-105">
                            <img src="https://f4.bcbits.com/img/a3120774687_16.jpg" alt="Album Art 2" class="w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-80">
                         </div>
-                        <p class="text-sm text-gray-400 opacity-0 md:opacity-100 item-title">Debut Album</p>
+                        <p class="text-sm opacity-0 md:opacity-100 item-title">Debut Album</p>
                     </a>
 
                     <!-- Grid Item 3 -->
@@ -100,7 +93,7 @@
                         <div class="aspect-square bg-gray-800 rounded-lg overflow-hidden mb-2 transform transition-transform duration-300 group-hover:scale-105">
                            <img src="https://f4.bcbits.com/img/a3618235571_16.jpg" alt="Album Art 3" class="w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-80">
                         </div>
-                        <p class="text-sm text-gray-400 opacity-0 md:opacity-100 item-title">Soundtrack Work</p>
+                        <p class="text-sm opacity-0 md:opacity-100 item-title">Soundtrack Work</p>
                     </a>
 
                     <!-- Grid Item 4 -->
@@ -108,14 +101,14 @@
                         <div class="aspect-square bg-gray-800 rounded-lg overflow-hidden mb-2 transform transition-transform duration-300 group-hover:scale-105">
                            <img src="https://f4.bcbits.com/img/a1532594746_16.jpg" alt="Album Art 4" class="w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-80">
                         </div>
-                        <p class="text-sm text-gray-400 opacity-0 md:opacity-100 item-title">Collaborations</p>
+                        <p class="text-sm opacity-0 md:opacity-100 item-title">Collaborations</p>
                     </a>
 
                 </div>
             </main>
 
             <!-- Footer Links Section -->
-            <footer class="text-gray-400 fade-in-element">
+            <footer class="fade-in-element">
                 <div class="flex flex-wrap justify-center gap-x-6 gap-y-2">
                     <a href="https://open.spotify.com/artist/0ob5tN3tawaTTcIVL7panu" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors duration-300">Spotify</a>
                     <a href="https://music.apple.com/us/artist/toko/129693668" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors duration-300">Apple Music</a>
@@ -132,41 +125,41 @@
     </div>
 
     <!-- Full-Width Footer Music Player -->
-    <div class="fixed bottom-0 left-0 right-0 w-full bg-black bg-opacity-50 backdrop-blur-md z-50 text-white">
+    <div class="fixed bottom-0 left-0 right-0 w-full bg-black bg-opacity-50 backdrop-blur-md z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center h-20 space-x-4">
                 <!-- Album Art & Song Info -->
                 <div class="flex items-center space-x-3 flex-shrink-0 w-1/4">
                     <img id="player-album-art" src="https://placehold.co/64x64/1a1a1a/ffffff?text=ART" class="w-12 h-12 rounded-md flex-shrink-0" alt="Album Art">
                     <div class="overflow-hidden hidden md:block">
-                        <p id="player-title" class="font-semibold text-white truncate">Song Title</p>
-                        <p id="player-artist" class="text-sm text-gray-300 truncate">Toko</p>
+                        <p id="player-title" class="font-semibold truncate">Song Title</p>
+                        <p id="player-artist" class="text-sm truncate">Toko</p>
                     </div>
                 </div>
 
                 <!-- Player Controls & Waveform -->
                 <div class="flex-grow flex flex-col justify-center items-center">
                     <div class="flex items-center space-x-2">
-                        <button id="prev-btn" class="text-white flex-shrink-0 p-2 hover:bg-white/10 rounded-full">
+                        <button id="prev-btn" class="flex-shrink-0 p-2 hover:bg-white/10 rounded-full">
                             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="currentColor"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M6 6h2v12H6zm3.5 6l8.5 6V6l-8.5 6z"/></svg>
                         </button>
-                        <button id="play-pause-btn" class="text-white flex-shrink-0 p-2 bg-white/20 hover:bg-white/30 rounded-full">
+                        <button id="play-pause-btn" class="flex-shrink-0 p-2 bg-white/20 hover:bg-white/30 rounded-full">
                             <svg id="play-icon" xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 0 24 24" width="28px" fill="currentColor"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M8 5v14l11-7L8 5z"/></svg>
                             <svg id="pause-icon" xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 0 24 24" width="28px" fill="currentColor" class="hidden"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
                         </button>
-                         <button id="next-btn" class="text-white flex-shrink-0 p-2 hover:bg-white/10 rounded-full">
+                         <button id="next-btn" class="flex-shrink-0 p-2 hover:bg-white/10 rounded-full">
                             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="currentColor"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
                         </button>
                     </div>
                     <div class="w-full flex items-center space-x-2 mt-2">
-                        <span id="current-time" class="text-xs text-gray-400 font-mono">0:00</span>
+                        <span id="current-time" class="text-xs font-mono">0:00</span>
                         <div id="waveform" class="w-full h-10"></div>
-                        <span id="duration" class="text-xs text-gray-400 font-mono">0:00</span>
-                    </dig
+                        <span id="duration" class="text-xs font-mono">0:00</span>
+                    </div>
                 </div>
 
                 <!-- Spacer to balance layout -->
-                <div class="w-1/4 flex-shrink-0"></div> 
+                <div class="w-1/4 flex-shrink-0"></div>
             </div>
         </div>
     </div>
