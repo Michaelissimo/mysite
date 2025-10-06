@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Patreon - Toko</title>
+    <title>Toko - Patreon</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts: Inter -->
@@ -11,36 +11,81 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
+        /* Consistent styles from main page */
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #111827; /* Dark background */
+            color: #EFBF04;
+            position: relative;
+            background-color: rgba(17, 17, 17, 0.7);
+            overflow-x: hidden;
         }
-        /* Style for the iframe container */
-        .iframe-container {
+        body::before {
+            content: "";
+            position: fixed;
+            left: 0;
+            top: 0;
             width: 100%;
-            max-width: 1024px; /* Limit max width */
-            height: 85vh; /* Responsive height */
-            background-color: rgba(0, 0, 0, 0.2);
-            border-radius: 12px;
-            padding: 1rem;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            height: 100%;
+            z-index: -1;
+            background-image: url('IMG_1937.jpg');
+            background-size: cover;
+            background-position: center;
+            filter: blur(5px);
+            transform: scale(1.1);
         }
-        iframe {
-            border-radius: 8px; /* Rounded corners for the iframe content */
+        /* Styles for fade-in animation on load */
+        .fade-in-element {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in-element.is-visible {
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
 </head>
-<body class="text-gray-200 antialiased">
+<body class="antialiased">
 
-    <div class="flex flex-col items-center justify-center min-h-screen p-4">
-        <div class="iframe-container">
-            <!-- Patreon Embed -->
-            <iframe src="https://www.patreon.com/cw/iamtoko" class="w-full h-full border-0" title="Patreon Embed"></iframe>
+    <!-- Main container to center content -->
+    <div class="flex flex-col items-center justify-center min-h-screen p-4 md:p-8">
+
+        <div class="w-full max-w-lg mx-auto text-center bg-black bg-opacity-30 backdrop-blur-sm rounded-lg p-8 md:p-12 fade-in-element">
+
+            <!-- Logo -->
+            <div class="mb-8 flex justify-center">
+                <img src="tokologo.jpg" alt="Toko Logo" class="max-w-xs w-full h-auto" style="max-width: 150px;">
+            </div>
+
+            <h1 class="text-3xl md:text-4xl font-bold mb-4">Support My Work</h1>
+            <p class="text-lg mb-8" style="color: #e5e5e5;">
+                Your support on Patreon allows me to continue creating music. Get exclusive content, behind-the-scenes access, and more by becoming a patron.
+            </p>
+
+            <a href="https://www.patreon.com/iamtoko" target="_blank" rel="noopener noreferrer" class="inline-block bg-yellow-500 text-black font-bold text-xl px-10 py-4 rounded-lg hover:bg-yellow-400 transition-colors duration-300">
+                Become a Patron
+            </a>
+
         </div>
-        <div class="text-center mt-6">
-             <a href="index.html" class="text-sm text-gray-400 hover:text-white transition-colors duration-300">&larr; Back to main site</a>
+
+        <div class="mt-8 fade-in-element">
+             <a href="index.html" class="hover:text-white transition-colors duration-300">&larr; Back to Main Site</a>
         </div>
+
     </div>
+    
+    <script>
+        // Fade-in animation logic
+        window.addEventListener('load', () => {
+            const fadeInElements = document.querySelectorAll('.fade-in-element');
+            fadeInElements.forEach((el, index) => {
+                setTimeout(() => {
+                    el.classList.add('is-visible');
+                }, index * 150); // Staggered delay
+            });
+        });
+    </script>
 
 </body>
 </html>
+
