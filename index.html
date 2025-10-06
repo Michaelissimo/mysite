@@ -10,6 +10,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- WaveSurfer.js CDN -->
+    <script src="https://unpkg.com/wavesurfer.js@7/dist/wavesurfer.min.js"></script>
     <style>
         /* Custom styles with background image */
         body {
@@ -124,7 +126,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center h-20 space-x-4">
                 <!-- Album Art & Song Info -->
-                <div class="flex items-center space-x-3 w-1/4">
+                <div class="flex items-center space-x-3 flex-shrink-0 w-1/4">
                     <img id="player-album-art" src="https://placehold.co/64x64/1a1a1a/ffffff?text=ART" class="w-12 h-12 rounded-md flex-shrink-0" alt="Album Art">
                     <div class="overflow-hidden hidden md:block">
                         <p id="player-title" class="font-semibold text-white truncate">Song Title</p>
@@ -132,8 +134,8 @@
                     </div>
                 </div>
 
-                <!-- Player Controls & Progress Bar -->
-                <div class="flex-grow flex flex-col justify-center items-center w-1/2">
+                <!-- Player Controls & Waveform -->
+                <div class="flex-grow flex flex-col justify-center items-center">
                     <div class="flex items-center space-x-2">
                         <button id="prev-btn" class="text-white flex-shrink-0 p-2 hover:bg-white/10 rounded-full">
                             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="currentColor"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M6 6h2v12H6zm3.5 6l8.5 6V6l-8.5 6z"/></svg>
@@ -148,23 +150,18 @@
                     </div>
                     <div class="w-full flex items-center space-x-2 mt-2">
                         <span id="current-time" class="text-xs text-gray-400 font-mono">0:00</span>
-                        <div id="progress-container" class="w-full h-1.5 bg-white/20 rounded-full cursor-pointer group">
-                            <div id="progress-bar" class="h-1.5 bg-white rounded-full"></div>
-                        </div>
+                        <div id="waveform" class="w-full h-10"></div>
                         <span id="duration" class="text-xs text-gray-400 font-mono">0:00</span>
                     </div>
                 </div>
 
                 <!-- Spacer to balance layout -->
-                <div class="w-1/4"></div>
+                <div class="w-1/4 flex-shrink-0"></div>
             </div>
         </div>
     </div>
 
-    <audio id="audio-player"></audio>
-
     <script>
-        const audioPlayer = document.getElementById('audio-player');
         const playPauseBtn = document.getElementById('play-pause-btn');
         const playIcon = document.getElementById('play-icon');
         const pauseIcon = document.getElementById('pause-icon');
@@ -173,10 +170,21 @@
         const playerTitle = document.getElementById('player-title');
         const playerArtist = document.getElementById('player-artist');
         const playerAlbumArt = document.getElementById('player-album-art');
-        const progressContainer = document.getElementById('progress-container');
-        const progressBar = document.getElementById('progress-bar');
         const currentTimeEl = document.getElementById('current-time');
         const durationEl = document.getElementById('duration');
+
+        // Initialize WaveSurfer
+        const wavesurfer = WaveSurfer.create({
+            container: '#waveform',
+            waveColor: 'rgba(255, 255, 255, 0.4)',
+            progressColor: 'rgba(255, 255, 255, 1)',
+            height: 40,
+            barWidth: 2,
+            barGap: 2,
+            barRadius: 2,
+            cursorWidth: 0,
+            interact: true,
+        });
 
         // --- Your Playlist ---
         const playlist = [
@@ -225,32 +233,7 @@
             playerTitle.textContent = track.title;
             playerArtist.textContent = track.artist;
             playerAlbumArt.src = track.artwork;
-            audioPlayer.src = track.src;
-            durationEl.textContent = "0:00"; // Reset duration
-        }
-
-        function playTrack() {
-            audioPlayer.play();
-            playIcon.classList.add('hidden');
-            pauseIcon.classList.remove('hidden');
-        }
-
-        function pauseTrack() {
-            audioPlayer.pause();
-            playIcon.classList.remove('hidden');
-            pauseIcon.classList.add('hidden');
-        }
-
-        function nextTrack() {
-            currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
-            loadTrack(currentTrackIndex);
-            playTrack();
-        }
-
-        function prevTrack() {
-            currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
-            loadTrack(currentTrackIndex);
-            playTrack();
+            wavesurfer.load(track.src);
         }
 
         function formatTime(seconds) {
@@ -259,39 +242,52 @@
             return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
         }
 
-        audioPlayer.addEventListener('timeupdate', () => {
-            const { currentTime, duration } = audioPlayer;
-            if (duration) {
-                const progressPercent = (currentTime / duration) * 100;
-                progressBar.style.width = `${progressPercent}%`;
-                currentTimeEl.textContent = formatTime(currentTime);
-            }
-        });
+        // --- Player Logic & Event Listeners ---
 
-        audioPlayer.addEventListener('loadedmetadata', () => {
-            durationEl.textContent = formatTime(audioPlayer.duration);
-        });
-        
-        progressContainer.addEventListener('click', (e) => {
-            const width = progressContainer.clientWidth;
-            const clickX = e.offsetX;
-            const duration = audioPlayer.duration;
-            if (duration) {
-                audioPlayer.currentTime = (clickX / width) * duration;
+        function playNextTrack(autoplay = false) {
+            currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+            loadTrack(currentTrackIndex);
+            if (autoplay) {
+                wavesurfer.once('ready', () => wavesurfer.play());
             }
-        });
+        }
+
+        function playPrevTrack() {
+            currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
+            loadTrack(currentTrackIndex);
+            wavesurfer.once('ready', () => wavesurfer.play());
+        }
 
         playPauseBtn.addEventListener('click', () => {
-            if (audioPlayer.paused) {
-                playTrack();
-            } else {
-                pauseTrack();
-            }
+            wavesurfer.playPause();
         });
 
-        nextBtn.addEventListener('click', nextTrack);
-        prevBtn.addEventListener('click', prevTrack);
-        audioPlayer.addEventListener('ended', nextTrack);
+        nextBtn.addEventListener('click', () => playNextTrack(true));
+        prevBtn.addEventListener('click', playPrevTrack);
+
+        // --- WaveSurfer Event Listeners ---
+
+        wavesurfer.on('play', () => {
+            playIcon.classList.add('hidden');
+            pauseIcon.classList.remove('hidden');
+        });
+
+        wavesurfer.on('pause', () => {
+            playIcon.classList.remove('hidden');
+            pauseIcon.classList.add('hidden');
+        });
+
+        wavesurfer.on('audioprocess', () => {
+            currentTimeEl.textContent = formatTime(wavesurfer.getCurrentTime());
+        });
+
+        wavesurfer.on('ready', () => {
+            durationEl.textContent = formatTime(wavesurfer.getDuration());
+        });
+
+        wavesurfer.on('finish', () => {
+            playNextTrack(true);
+        });
 
         // Load the initial track when the page loads
         window.addEventListener('load', () => {
@@ -302,7 +298,4 @@
 
 </body>
 </html>
-
-
-
 
